@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="weatherViewModel"
+            type="com.example.weatherandroid.model.WeatherViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.weatherandroid.model.WeatherFragment">
+
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@{weatherViewModel.iconIdString}"
+            android:layout_marginTop="50dp" />
+
+        <TextView
+            android:id="@+id/main_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:paddingBottom="15dp"
+            android:text="@{weatherViewModel.weatherData.main.tempNow}"
+            android:textSize="60dp"
+            app:layout_constraintEnd_toEndOf="@id/weather_icon"
+            app:layout_constraintStart_toStartOf="@id/weather_icon"
+            app:layout_constraintTop_toBottomOf="@id/weather_icon"
+            tools:text="20° C" />
+
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:text="@{weatherViewModel.weatherData.name}"
+            app:layout_constraintBottom_toBottomOf="@id/main_temp"
+            app:layout_constraintEnd_toEndOf="@id/main_temp"
+            app:layout_constraintStart_toStartOf="@id/main_temp"
+            tools:text="Ventspils" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{weatherViewModel.status.toString()}"
+            app:layout_constraintTop_toBottomOf="@id/city"
+            app:layout_constraintEnd_toEndOf="@id/city"
+            app:layout_constraintStart_toStartOf="@id/city"
+            tools:text="DONE" />
+
+        <TextView
+            android:id="@+id/iconId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{weatherViewModel.iconIdString}"
+            app:layout_constraintTop_toBottomOf="@id/status"
+            app:layout_constraintEnd_toEndOf="@id/status"
+            app:layout_constraintStart_toStartOf="@id/status"
+            tools:text="000" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
