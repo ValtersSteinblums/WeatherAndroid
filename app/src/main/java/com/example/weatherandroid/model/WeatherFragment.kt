@@ -12,20 +12,15 @@ import com.example.weatherandroid.databinding.WeatherFragmentBinding
 
 class WeatherFragment: Fragment() {
     private val viewModel: WeatherViewModel by viewModels()
-    private lateinit var binding: WeatherFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.weather_fragment, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val binding = WeatherFragmentBinding.inflate(inflater)
+        binding.lifecycleOwner = this
         binding.weatherViewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 }

@@ -33,11 +33,7 @@ class WeatherViewModel: ViewModel() {
                 _status.value = WeatherApiStatus.DONE
                 _weatherData.value = WeatherApi.retrofitService.getWeatherData()
 //                _iconIdString.value = getCurrentWeatherIcon()
-                _iconIdString.value = _weatherData.value?.weather?.get(0)?.id?.let {
-                    getCurrentWeatherIcon(
-                        it
-                    )
-                }
+                getCurrentWeatherIcon(_weatherData.value!!.weather[0].id)
             } catch (e: Exception) {
                 _status.value = WeatherApiStatus.ERROR
             }
@@ -47,8 +43,9 @@ class WeatherViewModel: ViewModel() {
     private fun getCurrentWeatherIcon(iconId: Int): String {
 //        return _weatherData.value?.weather?.get(0)?.id.toString()
         when (iconId) {
+            // range all values, just to see if it works and shows the icon...
             in 0..900 -> {
-                return "@drawable/ic_cloud"
+                _iconIdString.value = "@drawable/ic_cloud"
             }
         }
         return "@drawable/ic_error"

@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@{weatherViewModel.iconIdString}"
+            android:src="@drawable/ic_cloud"
             android:layout_marginTop="50dp" />
 
         <TextView
@@ -68,6 +68,7 @@
             app:layout_constraintEnd_toEndOf="@id/status"
             app:layout_constraintStart_toStartOf="@id/status"
             tools:text="000" />
+        
 
 
 
