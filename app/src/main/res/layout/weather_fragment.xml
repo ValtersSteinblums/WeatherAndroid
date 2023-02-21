@@ -68,7 +68,7 @@
             app:layout_constraintEnd_toEndOf="@id/status"
             app:layout_constraintStart_toStartOf="@id/status"
             tools:text="000" />
-        
+
 
 
 
