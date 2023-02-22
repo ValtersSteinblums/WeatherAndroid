@@ -23,4 +23,6 @@ class WeatherFragment: Fragment() {
         binding.weatherViewModel = viewModel
         return binding.root
     }
+
+
 }
