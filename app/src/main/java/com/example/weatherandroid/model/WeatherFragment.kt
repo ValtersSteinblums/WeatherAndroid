@@ -29,15 +29,16 @@ class WeatherFragment: Fragment() {
 
         viewModel.weatherData.observe(viewLifecycleOwner) {
             binding.cityName.text = it.name
-            binding.mainTemp.text = it.main.tempNow
+            binding.mainTemp.text = "${it.main.tempNow}°C" //should make string.xml for all my strings
         }
 
+        // https://freeicons.io/icon-list/weather-icon-set-3
         viewModel.iconType.observe(viewLifecycleOwner) {
             val iconId = when (it) {
-                IconType.CLOUDY -> R.drawable.ic_cloud
-                IconType.SUNNY -> R.drawable.ic_cloud
-                IconType.RAINY -> R.drawable.ic_cloud
-                IconType.NA -> R.drawable.ic_error
+                IconType.CLOUDY -> R.drawable.clouds
+                IconType.SUNNY -> R.drawable.clouds
+                IconType.RAINY -> R.drawable.clouds
+                IconType.NA -> R.drawable.clouds
             }
             binding.weatherIcon.setImageResource(iconId)
         }
