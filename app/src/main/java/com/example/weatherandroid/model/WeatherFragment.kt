@@ -34,6 +34,7 @@ class WeatherFragment: Fragment() {
 
         binding.textInputEditText.setOnKeyListener { view, keyCode, _ -> handleKeyEvent(view, keyCode) }
 
+
         viewModel.weatherData.observe(viewLifecycleOwner) {
             binding.cityName.text = it.name
             binding.mainTemp.text = "${it.main.temp.roundToInt().toString()}°C" //should make string.xml for all my strings
@@ -70,16 +71,25 @@ class WeatherFragment: Fragment() {
 
     }
 
-    private fun onSearch() {
-        val cityToSearchFor = binding.textInputEditText.text?.trim().toString()
-
-    }
-
     private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            val cityToSearchFor = binding.textInputEditText.text?.trim().toString()
+
+            viewModel.getSearchedCityWeatherData(cityToSearchFor)
+
             // hide the keyboard
             val inputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+
+            binding.inputCheck.text = cityToSearchFor
+
+            viewModel.weatherSearchedData.observe(viewLifecycleOwner) {
+                binding.cityName.text = it.city.name
+            }
+
+            viewModel.status.observe(viewLifecycleOwner) {
+                binding.secondApiCall.text = it.toString()
+            }
             return true
         }
         return false

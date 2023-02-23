@@ -79,24 +79,13 @@ class WeatherViewModel: ViewModel() {
 
     fun getSearchedCityWeatherData(userSearchQuery: String) {
         viewModelScope.launch {
+            _status.value = WeatherApiStatus.LOADING
             try {
                 _weatherSearchedData.value = WeatherApi.retrofitService.getSearchedWeatherData(userSearchQuery)
-
-                _iconType.value = when (weatherSearchedData.value?.list?.get(2)?.weather?.get(0)?.id) {
-                    in 0..300 -> IconType.WINDY
-                    in 301..600 -> IconType.RAINY
-                    in 601..700 -> IconType.SNOW
-                    in 701..771 -> IconType.FOG
-                    in 772..799 -> IconType.THUNDER
-                    800 -> IconType.SUNNY
-                    in 801..804 -> IconType.FOG
-                    in 900..903, in 905..1000 -> IconType.THUNDER
-                    903 -> IconType.SNOW
-                    904 -> IconType.SUNNY
-                    else -> IconType.NA
-                }
+                _status.value = WeatherApiStatus.LOADING
             } catch (e: Exception) {
                 _status.value = WeatherApiStatus.ERROR
+                println(e.message)
             }
         }
     }
