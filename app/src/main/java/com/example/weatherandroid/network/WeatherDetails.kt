@@ -1,6 +1,7 @@
 package com.example.weatherandroid.network
 
 import com.squareup.moshi.Json
+import java.util.Date
 import kotlin.math.roundToInt
 
 data class WeatherDetails (
@@ -37,8 +38,10 @@ data class Main (
     val humidity: Long,
 
     // Converting Doubles & Long -> String to show in XML, is there any better way to do this?
-    val tempNow: String = feelsLike.roundToInt().toString(),
-    val pressureToString: String = pressure.toString()
+    val tempFeelsLikeToString: String = feelsLike.roundToInt().toString(),
+    val tempMinToString: String = tempMin.roundToInt().toString(),
+    val tempMaxToString: String = tempMax.roundToInt().toString(),
+    val humidityToString: String = humidity.toString()
 )
 
 data class Sys (
@@ -58,5 +61,7 @@ data class Weather (
 
 data class Wind (
     val speed: Double,
-    val deg: Long
+    val deg: Long,
+
+    val speedToString: String = speed.toString()
 )
