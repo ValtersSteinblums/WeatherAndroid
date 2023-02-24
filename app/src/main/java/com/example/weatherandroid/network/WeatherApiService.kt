@@ -20,8 +20,9 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface WeatherApiService {
-    @GET("data/2.5/weather?lat=57.38944&lon=21.56056&appid=e04ea9586936265be7e8a6dbdd410773&units=metric")
-    suspend fun getWeatherData(): WeatherLocationDetails
+    //lat=57.38944&lon=21.56056
+    @GET("data/2.5/weather?&appid=e04ea9586936265be7e8a6dbdd410773&units=metric")
+    suspend fun getWeatherData(@Query("lat") latitude: String, @Query("lon") longitude: String): WeatherLocationDetails
 
     @GET("data/2.5/forecast?&appid=e04ea9586936265be7e8a6dbdd410773&units=metric&cnt=1")
     suspend fun getSearchedWeatherData(@Query("q") city: String): WeatherSearchedDetails

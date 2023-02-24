@@ -40,16 +40,16 @@ class WeatherViewModel: ViewModel() {
     private val _sunriseTime = MutableLiveData<String>()
     val sunriseTime: LiveData<String> = _sunriseTime
 
-    init {
-        getWeatherData()
-    }
+//    init {
+//        getWeatherData()
+//    }
 
-    private fun getWeatherData() {
+    fun getWeatherData(latitude: String, longitude: String) {
         viewModelScope.launch {
             _status.value = WeatherApiStatus.LOADING
             try {
                 _status.value = WeatherApiStatus.DONE
-                _weatherLocationData.value = WeatherApi.retrofitService.getWeatherData()
+                _weatherLocationData.value = WeatherApi.retrofitService.getWeatherData(latitude, longitude)
                 _weatherData.value = weatherLocationData.value?.let { mapWeatherLocationDetails(it) }
 
                 // set the weather icon values based on the WeatherDetails.weather[0].id value
@@ -71,6 +71,7 @@ class WeatherViewModel: ViewModel() {
                 _sunriseTime.value = weatherData.value?.sunrise?.let { getReadableTimeData(it) }
             } catch (e: Exception) {
                 _status.value = WeatherApiStatus.ERROR
+                println(e.message)
             }
         }
     }
