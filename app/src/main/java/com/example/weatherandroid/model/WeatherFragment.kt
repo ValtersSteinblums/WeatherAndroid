@@ -45,6 +45,7 @@ class WeatherFragment: Fragment() {
 
         // for text-field input, get new api call and dismiss the keyboard
         binding.textInputEditText.setOnKeyListener { view, keyCode, _ -> handleKeyEvent(view, keyCode) }
+        binding.myLocation.setOnClickListener { getCurrentLocation() }
 
 
         viewModel.weatherData.observe(viewLifecycleOwner) {
