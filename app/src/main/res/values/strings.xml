@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WeatherAndroid</string>
+    <string name="temperature">%d°C</string>
+    <string name="feels_like_temperature">Feels like: %d°C</string>
+    <string name="max_temperature">Max\n%d°C</string>
+    <string name="min_temperature">Min\n%d°C</string>
+    <string name="humidity">Humidity\n%d%%</string>
+    <string name="wind_speed">Wind speed\n%d m/s</string>
+    <string name="sunrise">Sunrise\n%s</string>
+    <string name="sunset">Sunset\n%s</string>
 </resources>

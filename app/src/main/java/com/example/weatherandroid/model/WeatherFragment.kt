@@ -36,22 +36,22 @@ class WeatherFragment: Fragment() {
 
 
         viewModel.weatherData.observe(viewLifecycleOwner) {
-            binding.cityName.text = it.name
-            binding.mainTemp.text = "${it.main.temp.roundToInt().toString()}°C" //should make string.xml for all my strings
-            binding.weatherDescription.text = it.weather[0].description.capitalize()
-            binding.feelsLike.text = it.main.tempFeelsLikeToString
-            binding.tempMax.text = it.main.tempMaxToString
-            binding.tempMin.text = it.main.tempMinToString
-            binding.humidity.text = it.main.humidityToString
-            binding.windSpeed.text = it.wind.speedToString
+            binding.cityName.text = it.city
+            binding.mainTemp.text = getString(R.string.temperature, it.currentTemp.roundToInt())
+            binding.weatherDescription.text = it.description.capitalize()
+            binding.feelsLike.text = getString(R.string.feels_like_temperature, it.feelsLikeTemp.roundToInt())
+            binding.tempMax.text = getString(R.string.max_temperature, it.maxTemp.roundToInt())
+            binding.tempMin.text = getString(R.string.min_temperature, it.minTemp.roundToInt())
+            binding.humidity.text = getString(R.string.humidity, it.humidity)
+            binding.windSpeed.text = getString(R.string.wind_speed, it.windSpeed.roundToInt())
         }
 
         viewModel.sunsetTime.observe(viewLifecycleOwner) {
-            binding.sunset.text = it
+            binding.sunset.text = getString(R.string.sunset, it)
         }
 
         viewModel.sunriseTime.observe(viewLifecycleOwner) {
-            binding.sunrise.text = it
+            binding.sunrise.text = getString(R.string.sunrise, it)
         }
 
         // https://freeicons.io/icon-list/weather-icon-set-3
@@ -80,16 +80,6 @@ class WeatherFragment: Fragment() {
             // hide the keyboard
             val inputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-
-            binding.inputCheck.text = cityToSearchFor
-
-            viewModel.weatherSearchedData.observe(viewLifecycleOwner) {
-                binding.cityName.text = it.city.name
-            }
-
-            viewModel.status.observe(viewLifecycleOwner) {
-                binding.secondApiCall.text = it.toString()
-            }
             return true
         }
         return false

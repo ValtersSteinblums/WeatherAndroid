@@ -88,26 +88,6 @@
             app:layout_constraintStart_toStartOf="@id/feels_like"
             tools:text="Preview City" />
 
-        <TextView
-            android:id="@+id/input_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/city_name"
-            app:layout_constraintEnd_toEndOf="@id/city_name"
-            app:layout_constraintStart_toStartOf="@id/city_name"
-            tools:text="test city search"
-            android:text="test test"/>
-
-        <TextView
-            android:id="@+id/second_api_call"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/input_check"
-            app:layout_constraintEnd_toEndOf="@id/input_check"
-            app:layout_constraintStart_toStartOf="@id/input_check"
-            tools:text="Status API"
-            android:text="Wheater api status"/>
-
         <LinearLayout
             android:id="@+id/linear1"
             android:layout_width="match_parent"

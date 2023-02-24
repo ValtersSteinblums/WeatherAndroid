@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherandroid.network.WeatherApi
-import com.example.weatherandroid.network.WeatherDetails
-import com.example.weatherandroid.network.WeatherSearchedDetails
+import com.example.weatherandroid.mapWeatherLocationDetails
+import com.example.weatherandroid.mapWeatherSearchedDetails
+import com.example.weatherandroid.network.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +19,10 @@ class WeatherViewModel: ViewModel() {
     private val _weatherData = MutableLiveData<WeatherDetails>()
     val weatherData: LiveData<WeatherDetails>
         get() = _weatherData
+
+    private val _weatherLocationData = MutableLiveData<WeatherLocationDetails>()
+    val weatherLocationData: LiveData<WeatherLocationDetails>
+        get() = _weatherLocationData
 
     private val _weatherSearchedData = MutableLiveData<WeatherSearchedDetails>()
     val weatherSearchedData: LiveData<WeatherSearchedDetails>
@@ -45,10 +49,11 @@ class WeatherViewModel: ViewModel() {
             _status.value = WeatherApiStatus.LOADING
             try {
                 _status.value = WeatherApiStatus.DONE
-                _weatherData.value = WeatherApi.retrofitService.getWeatherData()
+                _weatherLocationData.value = WeatherApi.retrofitService.getWeatherData()
+                _weatherData.value = weatherLocationData.value?.let { mapWeatherLocationDetails(it) }
 
                 // set the weather icon values based on the WeatherDetails.weather[0].id value
-                _iconType.value = when (weatherData.value?.weather?.firstOrNull()?.id) {
+                _iconType.value = when (weatherData.value?.weatherIcon) {
                     in 0..300 -> IconType.WINDY
                     in 301..600 -> IconType.RAINY
                     in 601..700 -> IconType.SNOW
@@ -62,8 +67,8 @@ class WeatherViewModel: ViewModel() {
                     else -> IconType.NA
                 }
 
-                _sunsetTime.value = getReadableTimeData(weatherData.value?.sys?.sunset ?: 1677091200)
-                _sunriseTime.value = getReadableTimeData(weatherData.value?.sys?.sunrise ?: 1677091200)
+                _sunsetTime.value = weatherData.value?.sunset?.let { getReadableTimeData(it) }
+                _sunriseTime.value = weatherData.value?.sunrise?.let { getReadableTimeData(it) }
             } catch (e: Exception) {
                 _status.value = WeatherApiStatus.ERROR
             }
@@ -82,7 +87,8 @@ class WeatherViewModel: ViewModel() {
             _status.value = WeatherApiStatus.LOADING
             try {
                 _weatherSearchedData.value = WeatherApi.retrofitService.getSearchedWeatherData(userSearchQuery)
-                _status.value = WeatherApiStatus.LOADING
+                _weatherData.value = weatherSearchedData.value?.let { mapWeatherSearchedDetails(it) }
+                _status.value = WeatherApiStatus.DONE
             } catch (e: Exception) {
                 _status.value = WeatherApiStatus.ERROR
                 println(e.message)

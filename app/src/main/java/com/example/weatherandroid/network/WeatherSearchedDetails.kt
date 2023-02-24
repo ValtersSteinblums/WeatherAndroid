@@ -1,5 +1,7 @@
 package com.example.weatherandroid.network
 
+import com.squareup.moshi.Json
+
 data class WeatherSearchedDetails (
     val cod: String,
     val message: Long,
@@ -11,9 +13,6 @@ data class WeatherSearchedDetails (
 data class City (
     val id: Long,
     val name: String,
-    val country: String,
-    val population: Long,
-    val timezone: Long,
     val sunrise: Long,
     val sunset: Long
 )
@@ -27,11 +26,10 @@ data class ListElement (
 
 data class MainSearched (
     val temp: Double,
-    val feelsLike: Double,
-    val tempMin: Double,
-    val tempMax: Double,
-    val humidity: Long,
-    val tempKf: Double
+    @Json(name="feels_like") val feelsLike: Double,
+    @Json(name="temp_min") val tempMin: Double,
+    @Json(name="temp_max") val tempMax: Double,
+    val humidity: Long
 )
 
 data class WeatherSearched (
