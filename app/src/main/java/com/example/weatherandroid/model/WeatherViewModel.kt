@@ -20,14 +20,6 @@ class WeatherViewModel: ViewModel() {
     val weatherData: LiveData<WeatherDetails>
         get() = _weatherData
 
-    private val _weatherLocationData = MutableLiveData<WeatherLocationDetails>()
-    val weatherLocationData: LiveData<WeatherLocationDetails>
-        get() = _weatherLocationData
-
-    private val _weatherSearchedData = MutableLiveData<WeatherSearchedDetails>()
-    val weatherSearchedData: LiveData<WeatherSearchedDetails>
-        get() = _weatherSearchedData
-
     private val _status = MutableLiveData<WeatherApiStatus>()
     val status: LiveData<WeatherApiStatus> = _status
 
@@ -40,17 +32,13 @@ class WeatherViewModel: ViewModel() {
     private val _sunriseTime = MutableLiveData<String>()
     val sunriseTime: LiveData<String> = _sunriseTime
 
-//    init {
-//        getWeatherData()
-//    }
-
     fun getWeatherData(latitude: String, longitude: String) {
         viewModelScope.launch {
             _status.value = WeatherApiStatus.LOADING
             try {
                 _status.value = WeatherApiStatus.DONE
-                _weatherLocationData.value = WeatherApi.retrofitService.getWeatherData(latitude, longitude)
-                _weatherData.value = weatherLocationData.value?.let { mapWeatherLocationDetails(it) }
+                val weatherLocationData = WeatherApi.retrofitService.getWeatherData(latitude, longitude)
+                _weatherData.value = mapWeatherLocationDetails(weatherLocationData)
 
                 // set the weather icon values based on the WeatherDetails.weather[0].id value
                 _iconType.value = when (weatherData.value?.weatherIcon) {
@@ -87,8 +75,8 @@ class WeatherViewModel: ViewModel() {
         viewModelScope.launch {
             _status.value = WeatherApiStatus.LOADING
             try {
-                _weatherSearchedData.value = WeatherApi.retrofitService.getSearchedWeatherData(userSearchQuery)
-                _weatherData.value = weatherSearchedData.value?.let { mapWeatherSearchedDetails(it) }
+                val weatherSearchedData = WeatherApi.retrofitService.getSearchedWeatherData(userSearchQuery)
+                _weatherData.value = mapWeatherSearchedDetails(weatherSearchedData)
                 _status.value = WeatherApiStatus.DONE
             } catch (e: Exception) {
                 _status.value = WeatherApiStatus.ERROR

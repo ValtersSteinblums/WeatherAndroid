@@ -90,50 +90,60 @@ class WeatherFragment: Fragment() {
 
             viewModel.getSearchedCityWeatherData(cityToSearchFor)
 
-            // hide the keyboard
-            val inputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            view.hideKeyboard()
             return true
         }
         return false
     }
 
+    private fun View.hideKeyboard() {
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+
     /* MARK: - GET USERS LOCATION */
     private fun getCurrentLocation() {
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                // final lat and log
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    requestPermission()
-                    return
-                }
-                fusedLocationClient.lastLocation.addOnCompleteListener {
-                    var location: Location? = it.result
-                    if (location == null) {
-                        Toast.makeText(requireContext(), "Null recieved", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(requireContext(), "Location recieved", Toast.LENGTH_SHORT).show()
-                        viewModel.getWeatherData(location.latitude.toString(), location.longitude.toString())
-                    }
-                }
-            } else {
-                // open settings here
-                Toast.makeText(requireContext(), "Turn on location", Toast.LENGTH_SHORT).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-        } else {
-            // request permission
+        if (checkPermissions().not()) {
             requestPermission()
+            return
+        }
+
+        if (isLocationEnabled().not()) {
+            openSettings()
+            return
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermission()
+            return
+        }
+        fusedLocationClient.lastLocation.addOnCompleteListener {
+            var location: Location? = it.result
+            if (location == null) {
+                Toast.makeText(requireContext(), "Null recieved", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Location recieved", Toast.LENGTH_SHORT).show()
+                viewModel.getWeatherData(
+                    location.latitude.toString(),
+                    location.longitude.toString()
+                )
+            }
         }
     }
+
+    private fun openSettings() {
+        Toast.makeText(requireContext(), "Turn on location", Toast.LENGTH_SHORT).show()
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        requireContext().startActivity(intent)
+    }
+
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
