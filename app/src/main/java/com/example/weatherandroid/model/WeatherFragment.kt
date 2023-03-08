@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.nfc.NfcAdapter.OnTagRemovedListener
 import android.os.Bundle
 import android.provider.Settings
 import android.view.KeyEvent
@@ -27,7 +28,6 @@ class WeatherFragment: Fragment() {
     private val viewModel: WeatherViewModel by viewModels()
     private lateinit var binding: WeatherFragmentBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
